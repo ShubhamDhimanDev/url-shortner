@@ -1,20 +1,32 @@
-/.phpunit.cache
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/vendor
-.env
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
-auth.json
-npm-debug.log
-yarn-error.log
-/.fleet
-/.idea
-/.vscode
+# .gitignore
+
+# Laravel
+/server/.phpunit.cache
+/server/server/node_modules
+/server/public/build
+/server/public/hot
+/server/public/storage
+/server/storage/*.key
+/server/vendor
+/server/.env
+/server/.env.backup
+/server/.env.production
+/server/.phpactor.json
+/server/.phpunit.result.cache
+/server/Homestead.json
+/server/Homestead.yaml
+/server/auth.json
+/server/npm-debug.log
+/server/yarn-error.log
+/server/.fleet
+/server/.idea
+/server/.vscode
+
+
+# React
+/front/node_modules
+/front/.env
+
+# OS
+.DS_Store
+Thumbs.db
