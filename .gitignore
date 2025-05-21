@@ -21,6 +21,7 @@
 /server/.fleet
 /server/.idea
 /server/.vscode
+/server/public/qrcodes
 
 
 # React
