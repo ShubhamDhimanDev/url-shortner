@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('short_url_id')->unsigned()->index();
             $table->foreign('short_url_id')->references('id')->on('urls')->onDelete('cascade');
             $table->string('visiter_ip_address');
-            $table->timestamp('visited_at');
+            $table->timestamp('visited_at')->useCurrent();
         });
     }
 

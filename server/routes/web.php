@@ -9,4 +9,7 @@ Route::get('/', function (Request $request) {
     return view('welcome');
 });
 
-Route::get('/send-test-email', [TestController::class, 'sendTestEmail']);
+Route::prefix('/test')->controller(TestController::class)->group(function(){
+    Route::get('/send-test-email', 'sendTestEmail');
+    Route::get('/ip-location', 'ipLocation');
+});

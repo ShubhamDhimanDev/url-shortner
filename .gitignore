@@ -31,3 +31,6 @@
 # OS
 .DS_Store
 Thumbs.db
+
+
+/short_url_queue_starter.txt

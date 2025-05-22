@@ -88,7 +88,7 @@ class UrlController extends Controller
             ],403);
         }
 
-        $filePath = public_path('qrcodes/'.$shortUrl->short_url.'.png');
+        $filePath = public_path('qrcodes/'.$shortUrl->short_url.'.svg');
         if(File::exists($filePath)){
             File::delete($filePath);
         }

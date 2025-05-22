@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Url;
 use App\Observers\UrlObserver;
+use App\Services\IpWhoisService;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton('ipwhois', function () {
+            return new IpWhoisService();
+        });
     }
 
     /**
