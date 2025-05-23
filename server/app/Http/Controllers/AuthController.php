@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -30,8 +31,7 @@ class AuthController extends Controller
         Auth::loginUsingId($user->id);
 
         return response()->json([
-            'user' => $user,
-            // 'token' => $token
+            'user' => $user
         ]);
     }
 
@@ -48,27 +48,20 @@ class AuthController extends Controller
         }
         $request->session()->regenerate();
         $user = Auth::user();
-        // $token = $user->createToken('main')->plainTextToken;
 
         return response()->json([
-            'user' => $user,
-            // 'token' => $token
+            'user' => $user
         ]);
     }
 
     public function logout(Request $request)
     {
-        // Invalidate the user's session
         $request->session()->invalidate();
-
-        // Regenerate the CSRF token
         $request->session()->regenerateToken();
 
-        // Manually clear the cookies
         $cookie = cookie('XSRF-TOKEN', null, -1, '/', null, false, true); // Clear CSRF cookie
         $cookie2 = cookie('laravel_session', null, -1, '/', null, false, true); // Clear session cookie
 
-        // Send a response to indicate the user has logged out and clear the cookies
         return response()->json(['success' => true])
             ->withCookie($cookie)
             ->withCookie($cookie2);
@@ -85,9 +78,21 @@ class AuthController extends Controller
         return response()->json(['message' => 'Verification email sent']);
     }
 
-    public function verifyEmail(EmailVerificationRequest $request)
+    public function verifyEmail(Request $request, $id, $hash)
     {
-        $request->fulfill();
+        $user = User::findOrFail($id);
+
+        if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+            throw new AuthorizationException;
+        }
+
+        if (! $user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+            event(new Verified($user));
+        }
+
+        $request->session()->regenerate();
+        Auth::login($user);
 
         return response()->json(['message' => 'Email verified']);
     }

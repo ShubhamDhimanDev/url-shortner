@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UrlController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -15,7 +14,8 @@ Route::controller(AuthController::class)->group(function(){
     Route::post('/reset-password', 'resetPassword')->name('password.reset');
 });
 
-Route::post('/get-long-url/{shortUrl}', [UrlController::class ,'getLongUrl']);
+Route::post('/get-long-url/{shortUrl}', [UrlController::class , 'getLongUrl']);
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->middleware('signed')->name('verification.verify');
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('/user', function (Request $request) {
@@ -25,7 +25,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::controller(AuthController::class)->group(function(){
         Route::post('/logout',  'logout');
         Route::post('/send-email-verification', 'sendEmailVerification');
-        Route::get('/email/verify/{id}/{hash}', 'verifyEmail')->middleware('signed')->name('verification.verify');
     });
 
     Route::controller(UrlController::class)->group(function(){
