@@ -15,6 +15,8 @@ Route::controller(AuthController::class)->group(function(){
     Route::post('/reset-password', 'resetPassword')->name('password.reset');
 });
 
+Route::post('/get-long-url/{shortUrl}', [UrlController::class ,'getLongUrl']);
+
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('/user', function (Request $request) {
         return $request->user();
@@ -28,7 +30,6 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::controller(UrlController::class)->group(function(){
         Route::post('/generate-short-url', 'generateShortUrl');
-        Route::post('/get-long-url/{shortUrl}', 'getLongUrl');
         Route::get('/get-url-list', 'getUrlList');
         Route::delete('delete-short-url/{shortUrl}', 'deleteShortUrl');
         Route::get('/get-analytics/{shortUrl}', 'getAnalytics');
