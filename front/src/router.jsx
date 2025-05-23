@@ -37,7 +37,7 @@ const router = createBrowserRouter([
                 element: <MyUrls />
             },
             {
-                path: '/analytics/:url',
+                path: '/analytics/:short_url',
                 element: <Analytics />
             },
             {

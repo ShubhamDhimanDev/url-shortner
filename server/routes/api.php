@@ -31,6 +31,8 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post('/get-long-url/{shortUrl}', 'getLongUrl');
         Route::get('/get-url-list', 'getUrlList');
         Route::delete('delete-short-url/{shortUrl}', 'deleteShortUrl');
+        Route::get('/get-analytics/{shortUrl}', 'getAnalytics');
+        Route::get('/get-analytics/{shortUrl}/monthly', 'getMonthlyAnalytics');
     });
 
 });

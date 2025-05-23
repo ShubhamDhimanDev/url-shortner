@@ -14,6 +14,13 @@ class UrlVisits extends Model
     protected $fillable = [
         'short_url_id',
         'visiter_ip_address',
+        'country',
+        'country_flag',
+        'city',
+        'referrer',
+        'device_type',
+        'browser',
+        'os',
         'visited_at'
     ];
 }
