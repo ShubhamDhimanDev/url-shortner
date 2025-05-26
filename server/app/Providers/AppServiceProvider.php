@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Url::observe(UrlObserver::class);
         ResetPassword::createUrlUsing(function ($notifiable, string $token) {
-            $frontendUrl = config('app.frontend_url', 'http://localhost:3000');
+            $frontendUrl = config('app.frontend_url');
             return "{$frontendUrl}/reset-password?token={$token}&email=" . urlencode($notifiable->getEmailForPasswordReset());
         });
     }

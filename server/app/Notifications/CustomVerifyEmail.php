@@ -49,7 +49,7 @@ class CustomVerifyEmail extends Notification implements ShouldQueue
         $hash = $segments[4] ?? null;
 
         // Final React frontend URL
-        $frontendUrl = env('FRONTEND_URL', 'http://localhost:3000');
+        $frontendUrl = config('app.frontend_url');
         $reactLink = $frontendUrl . "/verify-email?id={$id}&hash={$hash}&{$query}";
 
         return (new MailMessage)
