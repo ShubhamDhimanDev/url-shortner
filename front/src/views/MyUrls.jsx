@@ -9,6 +9,7 @@ export default function MyUrls() {
   const [urls, setUrls] = useState([]);
   const [paginate, setPaginate] = useState({});
   const [loading, setLoading] = useState(true);
+  const [toDelete, setToDelete] = useState(null);
 
   const fetchData = async (page = 1) => {
     setLoading(true);
@@ -26,24 +27,24 @@ export default function MyUrls() {
     }
   };
 
-  const deleteShortUrl = async (shortUrl) => {
+  const handleDelete = (shortUrl) => {
+    setToDelete(shortUrl);
+  };
+
+  const confirmDelete = async () => {
     try {
-      const response = await axiosClient.delete(`/delete-short-url/${shortUrl}`);
-      if (response.status === 200) {
-        alert('QR code deleted successfully.');
-        fetchData(); // Refresh the URL list after deletion
-      } else {
-        alert('Failed to delete the QR code.');
-      }
-    } catch (error) {
-      console.error('There was an error deleting the QR code!', error);
-      alert('There was an error deleting the QR code.');
+      await axiosClient.delete(`/delete-short-url/${toDelete}`);
+      setToDelete(null);
+      fetchData();
+    } catch (e) {
+      console.error(e);
+      setToDelete(null);
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const cancelDelete = () => setToDelete(null);
+
+  useEffect(() => { fetchData(); }, []);
 
 
 
@@ -63,14 +64,12 @@ export default function MyUrls() {
                   <th scope="col" className="px-6 py-3">Short URL</th>
                   <th scope="col" className="px-6 py-3">Long URL</th>
                   <th scope="col" className="px-6 py-3 text-center">QR Code</th>
-                  {/* <th scope="col" className="px-6 py-3 text-center"></th> */}
                   <th scope="col" className="px-6 py-3 text-center">Actions</th>
-                  {/* <th scope="col" className="px-6 py-3 text-center"></th> */}
                 </tr>
               </thead>
               <tbody className="">
                 {urls.map((url) => (
-                  <UrlElement key={url.id} url={url} onDelete={deleteShortUrl} />
+                  <UrlElement key={url.id} url={url} onRequestDelete={handleDelete} />
                 ))}
               </tbody>
             </table>
@@ -78,6 +77,26 @@ export default function MyUrls() {
           </>
         )}
       </div>
+
+      {/* Confirmation Modal */}
+      {toDelete && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-zinc-900 rounded-2xl p-6 w-80">
+            <h2 className="text-lg font-semibold text-white mb-4">Confirm Deletion</h2>
+            <p className="text-white mb-6">Are you sure you want to delete <span className="font-bold">{toDelete}</span>?</p>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={cancelDelete}
+                className="px-4 py-2 rounded-full border border-gray-500 text-white hover:bg-gray-700"
+              >Cancel</button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 rounded-full bg-red-600 text-white hover:bg-red-700"
+              >Yes, Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
     </PageComponent>
   );
 }

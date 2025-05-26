@@ -2,7 +2,7 @@ import { DocumentDuplicateIcon, CheckIcon } from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
 import { useState } from 'react';
 
-export default function UrlElement({ url, onDelete }) {
+export default function UrlElement({ url, onRequestDelete }) {
 
     const [copied, setCopied] = useState(false);
 
@@ -57,18 +57,19 @@ export default function UrlElement({ url, onDelete }) {
                 <td className="px-6 py-4 flex justify-center">
                     <img src={`${import.meta.env.VITE_API_BASE_URL}/qrcodes/${url.short_url}.svg`} height="100px" width="100px" alt="" />
                 </td>
-                {/* <td className="px-6 py-4 text-white">
-                </td> */}
-                <td className="px-6 py-4 text-center">
-                    <NavLink to={`/analytics/${url.short_url}`} className={({ isActive }) =>
-                        `text-primary-bg hover:underline ${isActive ? 'font-bold' : ''}`
-                    } >Analytics</NavLink><br /><br />
-                    <a onClick={handleDelete} className="cursor-pointer flex w-full justify-center rounded-full  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                        DELETE
-                    </a>
+                <td className="px-6 py-4 text-center space-y-2">
+                    <NavLink
+                        to={`/analytics/${url.short_url}`}
+                        className={({ isActive }) =>
+                            `text-primary-bg hover:underline ${isActive ? 'font-bold' : ''}`
+                        }
+                    >Analytics</NavLink>
+                    <br /><br />
+                    <button
+                        onClick={() => onRequestDelete(url.short_url)}
+                        className="mt-2 px-3 py-1.5 rounded-full bg-indigo-600 text-white hover:bg-indigo-500"
+                    >DELETE</button>
                 </td>
-                {/* <td className="px-6 py-4">
-                </td> */}
             </tr>
         </>
     );
