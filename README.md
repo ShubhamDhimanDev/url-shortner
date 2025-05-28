@@ -46,7 +46,7 @@ A full-stack URL shortener built with **React**, **Laravel**, and **Sanctum**. T
 
 ```bash
 git clone https://github.com/ShubhamDhimanDev/url-shortner.git
-cd url-shortener/backend
+cd url-shortner/backend
 
 cp .env.example .env
 composer install
